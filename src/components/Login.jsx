@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { React, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
+import * as API from '../api/user';
 
 const Login = () => {
   const [cpf, setCpf] = useState();
@@ -9,23 +9,12 @@ const Login = () => {
   const navigate = useNavigate();
 
   const handleSubmit = () => {
-    console.log('autenticou nnn');
-    const user = { cpf, password };
-    axios.put(`${baseURL}/login`, { cpf, password }).then((response) => {
-      navigate('/messages');
-    });
-  };
+    const resultado = API.login({ cpf, password });
 
-  const putLogin = async () => {
-    try {
-      console.log(response)
-      const response = await axios.put("http://localhost:3131/login")
-
-    }catch(error){
-      console.log(error)
+    if (resultado) {
+      navigate('/login');
     }
-  }
-
+  };
 
   return (
     <div>
