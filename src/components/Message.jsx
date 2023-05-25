@@ -1,11 +1,18 @@
-import React from 'react';
-import { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import * as API from '../api/user';
 
-const Message = (socket) => {
+const Message = ({socket}) => {
   const [userOn, setUserOn] = useState([]);
   const [messageList, setMessageList] = useState([]);
   const messageRef = useRef();
+
+  useEffect(() => {
+    socket.on('receive_message', (data) => {
+      setMessageList((current) => [...current, data]);
+    });
+
+    return () => socket.off('receive_message');
+  }, [socket]);
 
   useEffect(() => {
     API.online().then((res) => setUserOn(res.userOnline));
@@ -14,6 +21,7 @@ const Message = (socket) => {
   const handleSubmit = () => {
     const message = messageRef.current.value;
     if (!message.trim()) return;
+
     socket.emit('message', message);
     clearInput();
   };
@@ -30,7 +38,14 @@ const Message = (socket) => {
       </section>
 
       <section>
-        <ul id="messages"></ul>
+        <div>
+          {messageList.map((message, index) => (
+            <p key={index}>
+              {message.author}: {message.text}
+            </p>
+          ))}
+        </div>
+
         <input
           id="input"
           type="text"
