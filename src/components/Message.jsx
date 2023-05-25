@@ -14,13 +14,17 @@ const Message = () => {
       <section>
         <ul>
           {userOn && userOn.map((usr) => <li key={usr._id}>{usr.name}</li>)}
-          
         </ul>
       </section>
 
       <section>
         <ul id="messages"></ul>
-        <input id="input" type="text" autoComplete="off" />
+        <input
+          id="input"
+          type="text"
+          autoComplete="off"
+          placeholder="Mensagem"
+        />
         <br />
         <button>Enviar</button>
       </section>

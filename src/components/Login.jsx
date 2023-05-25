@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import * as API from '../api/user';
 import { useNavigate } from 'react-router-dom';
+import io from 'socket.io-client';
 
 export default function App() {
   const [cpf, setCpf] = useState('');
@@ -9,9 +10,11 @@ export default function App() {
 
   const handleSubmit = () => {
     console.log('aqui', cpf, password);
+
     const resultado = API.login({ cpf, password })
       .then((res) => {
         navigate('/message');
+        const socket = io.connect('http://localhost:8181');
       })
       .catch((err) => {
         console.log('err', err);
