@@ -3,18 +3,20 @@ import * as API from '../api/user';
 import { useNavigate } from 'react-router-dom';
 import io from 'socket.io-client';
 
-export default function App() {
+export default function App({setSocket}) {
   const [cpf, setCpf] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
-  const handleSubmit = () => {
-    console.log('aqui', cpf, password);
-
+  const handleSubmit = async () => {
     const resultado = API.login({ cpf, password })
       .then((res) => {
+        const socket = io.connect('http://localhost:8181', {
+          transports: ['websocket'],
+        });
+        socket.emit('set_userName', res.doc.name);
         navigate('/message');
-        const socket = io.connect('http://localhost:8181');
+        setSocket(socket)
       })
       .catch((err) => {
         console.log('err', err);
