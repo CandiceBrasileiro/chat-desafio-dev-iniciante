@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
-import './App.css';
+import './index.css';
 import Login from './components/Login';
 import Message from './components/Message';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 function App() {
-
   const [socket, setSocket] = useState(null);
   return (
     <BrowserRouter>

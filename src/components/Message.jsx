@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import * as API from '../api/user';
 
-const Message = ({socket}) => {
+const Message = ({ socket }) => {
   const [userOn, setUserOn] = useState([]);
   const [messageList, setMessageList] = useState([]);
   const messageRef = useRef();
@@ -30,14 +30,14 @@ const Message = ({socket}) => {
   };
 
   return (
-    <div>
-      <section>
+    <div className="container-message">
+      <section className="container-online">
         <ul>
           {userOn && userOn.map((usr) => <li key={usr._id}>{usr.name}</li>)}
         </ul>
       </section>
 
-      <section>
+      <section className="container-chat">
         <div>
           {messageList.map((message, index) => (
             <p key={index}>
