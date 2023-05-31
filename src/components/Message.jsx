@@ -24,32 +24,47 @@ const Message = ({ socket }) => {
 
     socket.emit('message', message);
     clearInput();
+    focusInput();
   };
+
   const clearInput = () => {
     messageRef.current.value = '';
   };
 
+  const focusInput = () => {
+    messageRef.current.focus();
+  };
+
+  const getEnterKey = (e) => {
+    if (e.key === 'Enter') handleSubmit();
+  };
+
   return (
-    <div>
-      <div className="max-h-screen">
+    <div className="bg-purple-600 max-h-screen py-10">
+      <div className="flex justify-center ">
+        <h1 className=" text-5xl py-10 text-white">Chat</h1>
+      </div>
+      <div className="">
         <div className="flex justify-center">
-          <section className=" border rounded-md mx-8 drop-shadow-lg ">
-            <ul class="w-40 items-center text-center capitalize border-slate-1200 font-sans font-normal text-base  y6">
-              {userOn && userOn.map((usr) => <li key={usr._id}>{usr.name}</li>)}
+          <section className=" border rounded-md mx-8 drop-shadow-lg bg-gray-100">
+            <ul className=" w-40 items-center text-center capitalize border-slate-1200 font-sans  text-base py-10 font-semibold">
+              {userOn &&
+                userOn.map((usr) => <li key={usr._id}> {usr.name}</li>)}
             </ul>
           </section>
 
-          <section className="flex flex-col border rounded-md drop-shadow-lg">
+          <section className="flex flex-col border rounded-md drop-shadow-lg  bg-gray-100">
             <div className="max-w-xl mx-2">
               {messageList.map((message, index) => (
                 <p
                   key={index}
-                  className="bg-purple-400 text-sm text-white px-3 py-1 border rounded-md my-3 drop-shadow-lg"
+                  className="bg-purple-600 text-sm text-white px-3 py-1 border rounded-md my-3 drop-shadow-lg"
                 >
                   {message.author}: {message.text}
                 </p>
               ))}
             </div>
+
             <div className="flex flex-nowrap mt-5">
               <input
                 id="input"
@@ -57,6 +72,7 @@ const Message = ({ socket }) => {
                 autoComplete="off"
                 placeholder="Mensagem"
                 ref={messageRef}
+                onKeyDown={(e) => getEnterKey(e)}
                 className="py-1 mb-5 bg-white shadow-inner my-3 px-3 mx-2 cursor-text  font-sans font-semiBold rounded-md text-base text-gray-700"
               />
               <br />

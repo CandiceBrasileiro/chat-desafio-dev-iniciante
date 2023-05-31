@@ -5,11 +5,13 @@ import io from 'socket.io-client';
 
 export default function App({ setSocket }) {
   const [cpf, setCpf] = useState('');
+  const [erro, setErro] = useState({});
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
   const handleSubmit = async () => {
     const resultado = API.login({ cpf, password })
+
       .then((res) => {
         const socket = io.connect('http://localhost:8181', {
           transports: ['websocket'],
@@ -19,13 +21,16 @@ export default function App({ setSocket }) {
         setSocket(socket);
       })
       .catch((err) => {
-        console.log('err', err);
+        if (err.response) {
+          setErro(err.response.data);
+          console.log(err.response.data);
+        }
         navigate('/');
       });
   };
 
   return (
-    <div className="flex justify-center items-center my-40 ">
+    <div className="flex justify-center items-center bg-purple-500">
       <div className=" bg-gray-50 shadow-lg shadow-purple-300 rounded-lg mt-50">
         <p className="px-10 font-sans font-bold text-base text-purple-800 text-center">
           Faça login para conversar no chat
@@ -48,6 +53,14 @@ export default function App({ setSocket }) {
             placeholder="Senha"
             className="w-60 mb-5 bg-white shadow-inner px-2 justify-items-center rounded cursor-text mx-auto font-sans font-semiBold text-base text-gray-400"
           />
+          <div>
+            {
+              <p className="text-center text-xs font-sans font-regular text-red capitalize">
+                {' '}
+                {erro && erro.message}
+              </p>
+            }
+          </div>
           <br />
           <button
             onClick={() => handleSubmit()}
