@@ -17,7 +17,7 @@ export default function App({ setSocket }) {
           transports: ['websocket'],
         });
         socket.emit('set_userName', res.doc.name);
-        navigate('/message');
+        navigate(`/message/${res.doc._id}`);
         setSocket(socket);
       })
       .catch((err) => {

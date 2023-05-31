@@ -9,3 +9,9 @@ export const online = async () => {
   const res = await axios.get('http://localhost:8181/users/online');
   return res.data;
 };
+
+export const logout = async ({ id }) => {
+  console.log('FRONTFRONT', id);
+  const res = await axios.put(`http://localhost:8181/logout/${id}`, logout);
+  return res.data;
+};

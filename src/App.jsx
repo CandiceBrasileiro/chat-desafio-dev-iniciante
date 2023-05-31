@@ -10,7 +10,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Login setSocket={setSocket} />} />
-        <Route path="/message" element={<Message socket={socket} />} />
+        <Route path="/message/:id" element={<Message socket={socket} />} />
       </Routes>
     </BrowserRouter>
   );

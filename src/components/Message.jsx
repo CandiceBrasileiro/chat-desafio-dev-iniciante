@@ -1,10 +1,21 @@
 import React, { useEffect, useState, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import * as API from '../api/user';
+import { useParams } from 'react-router';
+// import { FaCircle, FaPaperPlane } from 'react-icons/fa';
 
 const Message = ({ socket }) => {
   const [userOn, setUserOn] = useState([]);
   const [messageList, setMessageList] = useState([]);
   const messageRef = useRef();
+  const navigate = useNavigate();
+  const { id } = useParams();
+
+  const handleLogout = async () => {
+    const resultado = API.logout({ id }).then((res) => {
+      navigate('/');
+    });
+  };
 
   useEffect(() => {
     socket.on('receive_message', (data) => {
@@ -41,6 +52,16 @@ const Message = ({ socket }) => {
 
   return (
     <div className="bg-purple-600 max-h-screen py-10">
+      <div>
+        <button
+          className="bg-white px-8 rounded-md"
+          type="submit"
+          name="logout"
+          onClick={() => handleLogout()}
+        >
+          Sair
+        </button>
+      </div>
       <div className="flex justify-center ">
         <h1 className=" text-5xl py-10 text-white">Chat</h1>
       </div>
@@ -49,7 +70,13 @@ const Message = ({ socket }) => {
           <section className=" border rounded-md mx-8 drop-shadow-lg bg-gray-100">
             <ul className=" w-40 items-center text-center capitalize border-slate-1200 font-sans  text-base py-10 font-semibold">
               {userOn &&
-                userOn.map((usr) => <li key={usr._id}> {usr.name}</li>)}
+                userOn.map((usr) => (
+                  <li key={usr._id}>
+                    {' '}
+                    {/* <FaCircle /> */}
+                    {usr.name}
+                  </li>
+                ))}
             </ul>
           </section>
 
