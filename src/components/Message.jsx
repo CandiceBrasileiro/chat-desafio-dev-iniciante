@@ -30,32 +30,46 @@ const Message = ({ socket }) => {
   };
 
   return (
-    <div className="container-message">
-      <section className="container-online">
-        <ul>
-          {userOn && userOn.map((usr) => <li key={usr._id}>{usr.name}</li>)}
-        </ul>
-      </section>
+    <div>
+      <div className="max-h-screen">
+        <div className="flex justify-center">
+          <section className=" border rounded-md mx-8 drop-shadow-lg ">
+            <ul class="w-40 items-center text-center capitalize border-slate-1200 font-sans font-normal text-base  y6">
+              {userOn && userOn.map((usr) => <li key={usr._id}>{usr.name}</li>)}
+            </ul>
+          </section>
 
-      <section className="container-chat">
-        <div>
-          {messageList.map((message, index) => (
-            <p key={index}>
-              {message.author}: {message.text}
-            </p>
-          ))}
+          <section className="flex flex-col border rounded-md drop-shadow-lg">
+            <div className="max-w-xl mx-2">
+              {messageList.map((message, index) => (
+                <p
+                  key={index}
+                  className="bg-purple-400 text-sm text-white px-3 py-1 border rounded-md my-3 drop-shadow-lg"
+                >
+                  {message.author}: {message.text}
+                </p>
+              ))}
+            </div>
+            <div className="flex flex-nowrap mt-5">
+              <input
+                id="input"
+                type="text"
+                autoComplete="off"
+                placeholder="Mensagem"
+                ref={messageRef}
+                className="py-1 mb-5 bg-white shadow-inner my-3 px-3 mx-2 cursor-text  font-sans font-semiBold rounded-md text-base text-gray-700"
+              />
+              <br />
+              <button
+                onClick={() => handleSubmit()}
+                className="rounded bg-purple-600 px-10 ml-5 hover:bg-purple-800 my-3 mx-2 shadow-purple-300 text-white font-semiBold shadow-lg items-center text-center"
+              >
+                Enviar
+              </button>
+            </div>
+          </section>
         </div>
-
-        <input
-          id="input"
-          type="text"
-          autoComplete="off"
-          placeholder="Mensagem"
-          ref={messageRef}
-        />
-        <br />
-        <button onClick={() => handleSubmit()}>Enviar</button>
-      </section>
+      </div>
     </div>
   );
 };

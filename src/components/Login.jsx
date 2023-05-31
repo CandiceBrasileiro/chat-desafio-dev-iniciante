@@ -27,7 +27,7 @@ export default function App({ setSocket }) {
   return (
     <div className="flex justify-center items-center my-40 ">
       <div className=" bg-gray-50 shadow-lg shadow-purple-300 rounded-lg mt-50">
-        <p className="px-10 font-sans text-center">
+        <p className="px-10 font-sans font-bold text-base text-purple-800 text-center">
           Faça login para conversar no chat
         </p>
         <div className=" flex flex-col justify-items-center bg-gray-50 pt-20 rounded-lg  ">
@@ -37,21 +37,21 @@ export default function App({ setSocket }) {
             value={cpf}
             onChange={(e) => setCpf(e.target.value)}
             placeholder="CPF"
-            className="w-60 mb-5 bg-white shadow-inner  px-2 border-purple-600 rounded cursor-text mx-auto"
+            className="w-60 mb-5 bg-white shadow-inner px-2 rounded cursor-text mx-auto font-sans font-semiBold text-base text-gray-400"
           />
           <br />
           <input
-            type="text"
+            type="password"
             name="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="Senha"
-            className="w-60 mb-10 bg-white shadow-inner px-2 justify-items-center border-purple-600 rounded cursor-text mx-auto"
+            className="w-60 mb-5 bg-white shadow-inner px-2 justify-items-center rounded cursor-text mx-auto font-sans font-semiBold text-base text-gray-400"
           />
           <br />
           <button
             onClick={() => handleSubmit()}
-            className="rounded mx-20 mb-20 bg-purple-600 px-10 py-1 hover:bg-purple-800  shadow-purple-300 text-white shadow-lg "
+            className="rounded mx-20 mb-20 bg-purple-600 px-10 py-1 hover:bg-purple-800  shadow-purple-300 text-white font-semiBold shadow-lg "
           >
             Enviar
           </button>
