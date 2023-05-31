@@ -6,6 +6,7 @@ import { useParams } from 'react-router';
 
 const Message = ({ socket }) => {
   const [userOn, setUserOn] = useState([]);
+  const [newUser, setNewUser] = useState([]);
   const [messageList, setMessageList] = useState([]);
   const messageRef = useRef();
   const navigate = useNavigate();
@@ -21,13 +22,16 @@ const Message = ({ socket }) => {
     socket.on('receive_message', (data) => {
       setMessageList((current) => [...current, data]);
     });
-
     return () => socket.off('receive_message');
   }, [socket]);
 
   useEffect(() => {
+    socket.on('online', (data) => {
+      console.log('aqui', data);
+      setNewUser(data);
+    });
     API.online().then((res) => setUserOn(res.userOnline));
-  }, []);
+  }, [newUser]);
 
   const handleSubmit = () => {
     const message = messageRef.current.value;
