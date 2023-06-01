@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import * as API from '../api/user';
 import { useParams } from 'react-router';
-// import { FaCircle, FaPaperPlane } from 'react-icons/fa';
+import { FaPowerOff } from 'react-icons/fa';
 
 const Message = ({ socket }) => {
   const [userOn, setUserOn] = useState([]);
@@ -58,20 +58,23 @@ const Message = ({ socket }) => {
     <div className="bg-purple-600 max-h-screen py-10">
       <div>
         <button
-          className="bg-white px-8 rounded-md"
+          className="bg-white px-2 py-2 rounded-full"
           type="submit"
           name="logout"
           onClick={() => handleLogout()}
         >
-          Sair
+          <FaPowerOff />
         </button>
       </div>
       <div className="flex justify-center ">
-        <h1 className=" text-5xl py-10 text-white">Chat</h1>
+        <h1 className=" text-5xl py-10 text-white">Chat </h1>
       </div>
       <div className="">
         <div className="flex justify-center">
           <section className=" border rounded-md mx-8 drop-shadow-lg bg-gray-100">
+            <p className="font-sans  text-base font-bold text-center text-purple-800">
+              Online
+            </p>
             <ul className=" w-40 items-center text-center capitalize border-slate-1200 font-sans  text-base py-10 font-semibold">
               {userOn &&
                 userOn.map((usr) => (
@@ -87,16 +90,23 @@ const Message = ({ socket }) => {
           <section className="flex flex-col border rounded-md drop-shadow-lg  bg-gray-100">
             <div className="max-w-xl mx-2">
               {messageList.map((message, index) => (
-                <p
+                <div
+                  className={
+                    message.authorId === socket.id
+                      ? 'bg-purple-500 border rounded-md text-end px-3 my-3'
+                      : 'bg-gray-300 border rounded-md px-3 my-3'
+                  }
                   key={index}
-                  className="bg-purple-600 text-sm text-white px-3 py-1 border rounded-md my-3 drop-shadow-lg"
                 >
-                  {message.author}: {message.text}
-                </p>
+                  <div className="message-author">
+                    <strong>{message.author}</strong>
+                  </div>
+                  <div className="message-text">{message.text}</div>
+                </div>
               ))}
             </div>
 
-            <div className="flex flex-nowrap mt-5">
+            <div className="flex flex-nowrap mt-5 ">
               <input
                 id="input"
                 type="text"
@@ -108,6 +118,7 @@ const Message = ({ socket }) => {
               />
               <br />
               <button
+                disabled={userOn && userOn.length <= 1}
                 onClick={() => handleSubmit()}
                 className="rounded bg-purple-600 px-10 ml-5 hover:bg-purple-800 my-3 mx-2 shadow-purple-300 text-white font-semiBold shadow-lg items-center text-center"
               >

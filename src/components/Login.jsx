@@ -31,7 +31,7 @@ export default function App({ setSocket }) {
 
   return (
     <div className="flex justify-center items-center bg-purple-500">
-      <div className=" bg-gray-50 shadow-lg shadow-purple-300 rounded-lg mt-50">
+      <div className=" bg-gray-50 shadow-lg rounded-lg mt-50 my-11">
         <p className="px-10 font-sans font-bold text-base text-purple-800 text-center">
           Faça login para conversar no chat
         </p>
