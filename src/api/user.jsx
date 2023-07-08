@@ -5,6 +5,11 @@ export const login = async (user) => {
   return resultado.data;
 };
 
+export const getUsers = async () => {
+  const response = await axios.get('http://localhost:8181/users');
+  return response.data;
+};
+
 export const online = async () => {
   const res = await axios.get('http://localhost:8181/users/online');
   return res.data;

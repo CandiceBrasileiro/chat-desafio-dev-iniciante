@@ -5,8 +5,8 @@ import { useParams } from 'react-router';
 import { FaPowerOff } from 'react-icons/fa';
 
 const Message = ({ socket }) => {
-  const [userOn, setUserOn] = useState([]);
-  const [newUser, setNewUser] = useState([]);
+  const bottomRef = useRef();
+  const [allUsers, setAllUsers] = useState([]); 
   const [messageList, setMessageList] = useState([]);
   const messageRef = useRef();
   const navigate = useNavigate();
@@ -26,12 +26,18 @@ const Message = ({ socket }) => {
   }, [socket]);
 
   useEffect(() => {
-    socket.on('online', (data) => {
-      console.log('aqui', data);
-      setNewUser(data);
+    scrollDown();
+  }, [messageList]);
+
+  useEffect(() => {
+    API.getUsers().then((dados) => {
+      setAllUsers(dados);
     });
-    API.online().then((res) => setUserOn(res.userOnline));
-  }, [newUser]);
+  });
+
+  const scrollDown = () => {
+    bottomRef.current.scrollIntoView({ behavior: 'smooth' });
+  };
 
   const handleSubmit = () => {
     const message = messageRef.current.value;
@@ -67,27 +73,31 @@ const Message = ({ socket }) => {
         </button>
       </div>
       <div className="flex justify-center ">
-        <h1 className=" text-5xl py-10 text-white">Chat </h1>
+        <h1 className=" text-5xl py-10 text-white">Chat</h1>
       </div>
       <div className="">
         <div className="flex justify-center">
           <section className=" border rounded-md mx-8 drop-shadow-lg bg-gray-100">
-            <p className="font-sans  text-base font-bold text-center text-purple-800">
-              Online
+            <p className="font-sans text-base font-bold text-center text-purple-800">
+              Usuários
             </p>
-            <ul className=" w-40 items-center text-center capitalize border-slate-1200 font-sans  text-base py-10 font-semibold">
-              {userOn &&
-                userOn.map((usr) => (
-                  <li key={usr._id}>
+            <ul className=" w-40 items-center text-center capitalize border-slate-1200 font-sans  text-base py-5 font-semibold">
+              {allUsers &&
+                allUsers.map((usr) => (
+                  <li
+                    key={usr._id}
+                    className={
+                      usr.online == 1 ? 'text-slate-950' : 'text-slate-500'
+                    }
+                  >
                     {' '}
-                    {/* <FaCircle /> */}
                     {usr.name}
                   </li>
                 ))}
             </ul>
           </section>
 
-          <section className="flex flex-col border rounded-md drop-shadow-lg  bg-gray-100">
+          <section className="flex flex-col border rounded-md drop-shadow-lg bg-gray-100">
             <div className="max-w-xl mx-2">
               {messageList.map((message, index) => (
                 <div
@@ -104,6 +114,7 @@ const Message = ({ socket }) => {
                   <div className="message-text">{message.text}</div>
                 </div>
               ))}
+              <div ref={bottomRef} />
             </div>
 
             <div className="flex flex-nowrap mt-5 ">
@@ -118,8 +129,7 @@ const Message = ({ socket }) => {
               />
               <br />
               <button
-                disabled={userOn && userOn.length <= 1}
-                onClick={() => handleSubmit()}
+                onClick={handleSubmit}
                 className="rounded bg-purple-600 px-10 ml-5 hover:bg-purple-800 my-3 mx-2 shadow-purple-300 text-white font-semiBold shadow-lg items-center text-center"
               >
                 Enviar
